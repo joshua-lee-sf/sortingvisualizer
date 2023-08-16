@@ -22,18 +22,22 @@ const SortingVisualizer = () => {
     }
 
     return(
-        <div className="array-bar-container">
-            {array.map((value, idx) => {
-                return(
-                    <div 
-                        className="array-bar" 
-                        key={idx}
-                        style={{height: `${value}px`}}
-                    >
-                    </div>
-                )
-            })}
-        </div>
+        <>
+            <div className="array-bar-container">
+                {array.map((value, idx) => {
+                    return(
+                        <div 
+                            className="array-bar" 
+                            key={idx}
+                            style={{height: `${value}px`}}
+                        >
+                        </div>
+                    )
+                })}
+            </div>
+            <button>Generate New Array</button>
+        </>
+
     )
 }
 
