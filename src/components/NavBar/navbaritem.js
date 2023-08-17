@@ -1,18 +1,11 @@
 const NavBarItem = () => {
     return(
-        <>
-            <div className="navbar-left">
-                <ul>
-
-                </ul>
-            </div>
-            <div className="navbar-right">
-                <ul>
-                    <li>Github</li>
-                    <li>LinkedIn</li>
-                </ul>
-            </div>
-        </>
+        <div className="navbar-right">
+            <ul>
+                <li><a href="">Github</a></li>
+                <li><a href="">LinkedIn</a></li>
+            </ul>
+        </div>
     )
 }
 
