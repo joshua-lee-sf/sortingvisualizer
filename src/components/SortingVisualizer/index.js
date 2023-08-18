@@ -75,8 +75,24 @@ const SortingVisualizer = () => {
 
     }
 
-    const bubbleSort = (array) => {
-        
+    const bubbleSort = (array, func) => {
+        const arrayClone = array.slice();
+        let sorted = false;
+
+        while (!sorted){
+            sorted = true;
+
+            for(let i = 1, n = arrayClone.length; i < n; i++ ){
+                if (arrayClone[i - 1] > arrayClone[i]){
+                    sorted = false;
+                    let swap = arrayClone[i - 1];
+                    arrayClone[i - 1] = arrayClone[i]
+                    arrayClone[i] = swap;
+                }
+            }
+        }
+
+        return arrayClone;
     }
 
     return(
@@ -99,7 +115,7 @@ const SortingVisualizer = () => {
                 <button onClick={() => setArray(quickSort(array))}>Quick Sort</button>
                 <button>Heap Sort</button>
                 <button>Insertion Sort</button>
-                <button>Bubble Sort</button>
+                <button onClick={() => setArray(bubbleSort(array))}>Bubble Sort</button>
             </div>
         </>
 
