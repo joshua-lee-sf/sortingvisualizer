@@ -1,6 +1,4 @@
 .array-bar-container{
-    // width: 100vh;
-    height: 95vh;
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -11,4 +9,9 @@
         background-color: pink;
         display: inline;
     }
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
 }
