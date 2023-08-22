@@ -4,6 +4,8 @@ import './sortingvisualizer.scss';
 const SortingVisualizer = () => {
 
     const [array, setArray] = useState([]);
+    const [swapIndices, setSwapIndices] = useState([]);
+    const delay = 100;
 
     useEffect(()=> {
         resetArray();
@@ -71,29 +73,120 @@ const SortingVisualizer = () => {
         return [...sortedLeft, pivot, ...sortedRight];
     }
 
-    const heapSort = () => {
+    // const heapify = (array, length, parentIndex) => {
+    //     let largest = parentIndex;
+    //     let left = parentIndex * 2 + 1;
+    //     let right = left + 1;
 
-    }
+    //     if (left < length && array[left] > array[largest]){
+    //         largest = left;
+    //     }
+    //     if (right < length && array[right] > array[largest]){
+    //         largest = right;
+    //     }
 
-    const bubbleSort = (array, func) => {
-        const arrayClone = array.slice();
-        let sorted = false;
+    //     if (largest !== parentIndex) {
+    //         let temp = array[largest];
+    //         array[largest] = array[parentIndex];
+    //         array[parentIndex] = temp;
+    //     }
 
-        while (!sorted){
-            sorted = true;
+    //     return array;
+    // }
 
-            for(let i = 1, n = arrayClone.length; i < n; i++ ){
-                if (arrayClone[i - 1] > arrayClone[i]){
-                    sorted = false;
-                    let swap = arrayClone[i - 1];
-                    arrayClone[i - 1] = arrayClone[i]
-                    arrayClone[i] = swap;
-                }
+    const heapSort = (array) => {
+        let arrayClone = array.slice();
+        let heapSize;
+
+        const maxHeapify = (i) => {
+            let left = 2 * i + 1;
+            let right = 2 * i + 2;
+            let largest;
+    
+            if (left <= heapSize && arrayClone[left] > arrayClone[i]){
+                largest = left;
+            } else {
+                largest = i;
+            }
+    
+            if (right <= heapSize && arrayClone[right] > arrayClone[largest]){
+                largest = right;
+            } 
+    
+            if (largest !== i){
+                let temp = arrayClone[i];
+                arrayClone[i] = arrayClone[largest];
+                arrayClone[largest] = temp;
+                maxHeapify(largest);
             }
         }
-
+    
+        const buildMaxHeap = () => {
+            heapSize = arrayClone.length - 1;
+            for (let i = Math.floor(heapSize / 2); i >= 0; i--){
+                maxHeapify(i);
+            }
+        }
+    
+        buildMaxHeap();
+        for (let i = arrayClone.length; i >=0; i--){
+            let temp = arrayClone[0];
+            arrayClone[0] = arrayClone[i];
+            arrayClone[i] = temp;
+            heapSize--;
+            maxHeapify(0);
+        }
+    
         return arrayClone;
     }
+
+    // const bubbleSort = (array, func) => {
+    //     const arrayClone = array?.slice();
+    //     let sorted = false;
+
+    //     while (!sorted){
+    //         sorted = true;
+
+    //         for(let i = 1, n = arrayClone?.length; i < n; i++ ){
+    //             if (arrayClone[i - 1] > arrayClone[i]){
+    //                 sorted = false;
+    //                 let swap = arrayClone[i - 1];
+    //                 arrayClone[i - 1] = arrayClone[i]
+    //                 arrayClone[i] = swap;
+    //             }
+    //         }
+    //     }
+
+    //     return arrayClone;
+    // }
+
+
+
+    const bubbleSortWithAnimation = async (array, updateArray) => {
+        const arrayClone = array?.slice();
+        let sorted = false;
+      
+        while (!sorted) {
+          sorted = true;
+      
+          for (let i = 1, n = arrayClone?.length; i < n; i++) {
+            if (arrayClone[i - 1] > arrayClone[i]) {
+              sorted = false;
+      
+              // Swap elements
+              let swap = arrayClone[i - 1];
+              arrayClone[i - 1] = arrayClone[i];
+              arrayClone[i] = swap;
+      
+              // Update the array with animation
+              await updateArray([...arrayClone]);
+              await new Promise(resolve => setTimeout(resolve, delay)); // Introduce delay
+            }
+          }
+        }
+      
+        return arrayClone;
+      };
 
     return(
         <>
@@ -103,7 +196,7 @@ const SortingVisualizer = () => {
                         <div 
                             className="array-bar" 
                             key={idx}
-                            style={{height: `${value}px`}}
+                            style={{height: `${Math.floor(value/2)}px`}}
                         >
                         </div>
                     )
@@ -113,9 +206,9 @@ const SortingVisualizer = () => {
                 <button onClick={() => resetArray()}>Generate New Array</button>
                 <button onClick={() => setArray(mergeSort(array))}>Merge Sort</button>
                 <button onClick={() => setArray(quickSort(array))}>Quick Sort</button>
-                <button>Heap Sort</button>
+                <button onClick={() => setArray(heapSort(array))}>Heap Sort</button>
                 <button>Insertion Sort</button>
-                <button onClick={() => setArray(bubbleSort(array))}>Bubble Sort</button>
+                <button onClick={() => bubbleSortWithAnimation(array, setArray)}>Bubble Sort</button>
             </div>
         </>
 
