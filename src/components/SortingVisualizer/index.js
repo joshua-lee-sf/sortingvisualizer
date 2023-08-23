@@ -201,4 +201,3 @@ const SortingVisualizer = () => {
 
 export default SortingVisualizer;
 
-hello
